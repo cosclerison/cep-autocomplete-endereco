@@ -4,36 +4,37 @@ const addressInput = document.querySelector("#address");
 const cityInput = document.querySelector("#city");
 const neighborhoodInput = document.querySelector("#neighborhood");
 const regionInput = document.querySelector("#region");
+const formInputs = document.querySelectorAll("[data-input]");
 
-// seleciona todos os data-input, para desabilitar no momento certo
-const formInputs = document.querySelectorAll("[data-input]")
+const closeButton = document.querySelector("#close-message");
 
-const closeButton = document.querySelector("#close-message")
-
-// Validar CEP input, apenas numeros
+// Validate CEP Input
 cepInput.addEventListener("keypress", (e) => {
-  const onlyNumbers = /[0-9]/;
+  const onlyNumbers = /[0-9]|\./;
   const key = String.fromCharCode(e.keyCode);
 
-  // somente números
-  if(!onlyNumbers.test(key)) {
+  console.log(key);
+
+  console.log(onlyNumbers.test(key));
+
+  // allow only numbers
+  if (!onlyNumbers.test(key)) {
     e.preventDefault();
     return;
   }
 });
 
-
 // Evento to get address
 cepInput.addEventListener("keyup", (e) => {
   const inputValue = e.target.value;
 
-  //   Verificar se possui todos os números do CEP
+  //   Check if we have a CEP
   if (inputValue.length === 8) {
     getAddress(inputValue);
   }
 });
 
-// Buscar o CEP na API
+// Get address from API
 const getAddress = async (cep) => {
   toggleLoader();
 
@@ -49,7 +50,7 @@ const getAddress = async (cep) => {
   console.log(formInputs);
   console.log(data.erro);
 
-  // Shw erro e limpar form
+  // Show error and reset form
   if (data.erro === "true") {
     if (!addressInput.hasAttribute("disabled")) {
       toggleDisabled();
